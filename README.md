@@ -24,3 +24,5 @@ Fully functional and tested
 1. Clone the repository:
    ```bash
    git clone https://github.com/Sadhiya0201/Student-Record-Management-System.git
+## Author
+- Sadhiya
