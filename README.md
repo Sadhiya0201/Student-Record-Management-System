@@ -1,4 +1,4 @@
-# Student Account Management System
+# Student Record Management System
 
 ## Description
 This is a Java-based console application designed to manage student records efficiently.  
