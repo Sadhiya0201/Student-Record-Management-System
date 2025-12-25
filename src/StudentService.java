@@ -6,32 +6,30 @@ public class StudentService {
     private ArrayList<Student> students = new ArrayList<>();
     private Scanner scanner = new Scanner(System.in);
 
-    // Add student
+    // Add a new student
     public void addStudent() {
         System.out.print("Enter ID: ");
         int id = scanner.nextInt();
-        scanner.nextLine();
+        scanner.nextLine(); // consume newline
 
-        for (Student s : students) {
-            if (s.getId() == id) {
-                System.out.println("Student with this ID already exists.");
-                return;
-            }
+        if (findStudentIndexById(id) != -1) {
+            System.out.println("Error: Student with this ID already exists!");
+            return;
         }
 
         System.out.print("Enter Name: ");
         String name = scanner.nextLine();
-
         System.out.print("Enter Department: ");
-        String dept = scanner.nextLine();
-
-        System.out.print("Enter Marks: ");
+        String department = scanner.nextLine();
+        System.out.print("Enter Marks (0-100): ");
         int marks = scanner.nextInt();
+        scanner.nextLine();
 
-        Student student = new Student(id, name, dept, marks);
+        Student student = new Student(id, name, department, marks);
         students.add(student);
-
         System.out.println("Student added successfully!");
+
+        displayTotalStudents();
     }
 
     // View all students
@@ -40,62 +38,72 @@ public class StudentService {
             System.out.println("No students found.");
             return;
         }
-
         for (Student s : students) {
             s.displayStudent();
         }
     }
 
-    // Search student
+    // Search student by ID
     public void searchStudent() {
-        System.out.print("Enter ID to search: ");
-        int id = scanner.nextInt();
-
-        for (Student s : students) {
-            if (s.getId() == id) {
-                s.displayStudent();
-                return;
-            }
-        }
-        System.out.println("Student not found.");
-    }
-
-    // Update student
-    public void updateStudent() {
-        System.out.print("Enter ID to update: ");
+        System.out.print("Enter Student ID to search: ");
         int id = scanner.nextInt();
         scanner.nextLine();
-
-        for (Student s : students) {
-            if (s.getId() == id) {
-                System.out.print("Enter new name: ");
-                s.setName(scanner.nextLine());
-
-                System.out.print("Enter new department: ");
-                s.setDepartment(scanner.nextLine());
-
-                System.out.print("Enter new marks: ");
-                s.setMarks(scanner.nextInt());
-
-                System.out.println("Student updated successfully!");
-                return;
-            }
+        int index = findStudentIndexById(id);
+        if (index != -1) {
+            students.get(index).displayStudent();
+        } else {
+            System.out.println("Student not found.");
         }
-        System.out.println("Student not found.");
+    }
+
+    // Update student info
+    public void updateStudent() {
+        System.out.print("Enter Student ID to update: ");
+        int id = scanner.nextInt();
+        scanner.nextLine();
+        int index = findStudentIndexById(id);
+        if (index == -1) {
+            System.out.println("Student not found.");
+            return;
+        }
+
+        Student s = students.get(index);
+        System.out.print("Enter new Name: ");
+        s.setName(scanner.nextLine());
+        System.out.print("Enter new Department: ");
+        s.setDepartment(scanner.nextLine());
+        System.out.print("Enter new Marks (0-100): ");
+        s.setMarks(scanner.nextInt());
+        scanner.nextLine();
+
+        System.out.println("Student updated successfully!");
     }
 
     // Delete student
     public void deleteStudent() {
-        System.out.print("Enter ID to delete: ");
+        System.out.print("Enter Student ID to delete: ");
         int id = scanner.nextInt();
-
-        for (Student s : students) {
-            if (s.getId() == id) {
-                students.remove(s);
-                System.out.println("Student deleted successfully!");
-                return;
-            }
+        scanner.nextLine();
+        int index = findStudentIndexById(id);
+        if (index == -1) {
+            System.out.println("Student not found.");
+            return;
         }
-        System.out.println("Student not found.");
+        students.remove(index);
+        System.out.println("Student deleted successfully!");
+        displayTotalStudents();
+    }
+
+    // Find student index by ID
+    private int findStudentIndexById(int id) {
+        for (int i = 0; i < students.size(); i++) {
+            if (students.get(i).getId() == id) return i;
+        }
+        return -1;
+    }
+
+    // Display total students
+    private void displayTotalStudents() {
+        System.out.println("Total students: " + students.size());
     }
 }

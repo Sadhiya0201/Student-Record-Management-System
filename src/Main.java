@@ -1,11 +1,9 @@
-import java.util.Scanner;
-
 public class Main {
 
     public static void main(String[] args) {
 
         StudentService service = new StudentService();
-        Scanner scanner = new Scanner(System.in);
+        java.util.Scanner scanner = new java.util.Scanner(System.in);
 
         while (true) {
             System.out.println("\n--- Student Record Management ---");
